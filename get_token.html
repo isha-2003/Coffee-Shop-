@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Get JWT Token - Coffee Shop</title>
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+</head>
+<body>
+    <h1>Coffee Shop - Get JWT Token</h1>
+    
+    <div id="login-section">
+        <button onclick="login()">Login</button>
+    </div>
+    
+    <div id="token-section" style="display:none;">
+        <h3>Your JWT Token:</h3>
+        <textarea id="token" rows="10" cols="80" readonly></textarea>
+        <br><br>
+        <button onclick="copyToken()">Copy Token</button>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        // Replace these with your actual Auth0 configuration
+        const auth0 = new auth0.Auth0Client({
+            domain: 'your-tenant-name.us.auth0.com',  // Replace with your domain
+            clientId: 'your-client-id',               // Replace with your client ID
+            authorizationParams: {
+                redirect_uri: window.location.origin,
+                audience: 'coffee-shop'               // Replace with your API identifier
+            }
+        });
+
+        async function login() {
+            try {
+                await auth0.loginWithRedirect();
+            } catch (error) {
+                console.error('Login failed:', error);
+            }
+        }
+
+        async function logout() {
+            try {
+                await auth0.logout({
+                    logoutParams: {
+                        returnTo: window.location.origin
+                    }
+                });
+            } catch (error) {
+                console.error('Logout failed:', error);
+            }
+        }
+
+        async function copyToken() {
+            const tokenElement = document.getElementById('token');
+            tokenElement.select();
+            document.execCommand('copy');
+            alert('Token copied to clipboard!');
+        }
+
+        // Check if user is authenticated when page loads
+        window.addEventListener('load', async () => {
+            try {
+                // Handle redirect callback
+                if (window.location.search.includes('code=')) {
+                    await auth0.handleRedirectCallback();
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
+
+                const isAuthenticated = await auth0.isAuthenticated();
+                
+                if (isAuthenticated) {
+                    const token = await auth0.getTokenSilently();
+                    document.getElementById('token').value = token;
+                    document.getElementById('login-section').style.display = 'none';
+                    document.getElementById('token-section').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Authentication check failed:', error);
+            }
+        });
+    </script>
+</body>
+</html>
