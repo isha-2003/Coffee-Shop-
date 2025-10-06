@@ -6,9 +6,10 @@ from urllib.request import urlopen
 
 
 # Replace these with your actual Auth0 values
-AUTH0_DOMAIN = 'your-tenant-name.us.auth0.com'  # Replace with your tenant domain
+# Get your domain from: Auth0 Dashboard > Applications > Your SPA > Settings > Domain
+AUTH0_DOMAIN = 'YOUR-TENANT-NAME.us.auth0.com'  # Replace with your full Auth0 domain
 ALGORITHMS = ['RS256']
-API_AUDIENCE = 'coffee-shop'  # Replace with your API identifier 
+API_AUDIENCE = 'coffee'  # This should match your API identifier (use 'coffee') 
 ## AuthError Exception
 '''
 AuthError Exception

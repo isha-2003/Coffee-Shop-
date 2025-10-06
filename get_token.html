@@ -21,12 +21,13 @@
 
     <script>
         // Replace these with your actual Auth0 configuration
+        // Get these from your Auth0 Dashboard
         const auth0 = new auth0.Auth0Client({
-            domain: 'your-tenant-name.us.auth0.com',  // Replace with your domain
-            clientId: 'your-client-id',               // Replace with your client ID
+            domain: 'YOUR-TENANT-NAME.us.auth0.com',  // Replace with your full Auth0 domain
+            clientId: 'YOUR-CLIENT-ID',               // Replace with your client ID
             authorizationParams: {
                 redirect_uri: window.location.origin,
-                audience: 'coffee-shop'               // Replace with your API identifier
+                audience: 'coffee'                    // This should match your API identifier
             }
         });
 
